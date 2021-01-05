@@ -7,6 +7,7 @@ import { introspectionQuery } from 'graphql/utilities/introspectionQuery'
 import { buildClientSchema } from 'graphql/utilities/buildClientSchema'
 import { printSchema } from 'graphql/utilities/schemaPrinter'
 import * as query from 'querystringify'
+import { Agent } from 'https'
 
 /**
  *
@@ -40,6 +41,7 @@ interface Options {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
   headers?: { [key: string]: string }
   json?: boolean
+  ignoreCertErrors?: boolean
 }
 
 /**
@@ -56,7 +58,11 @@ export async function getRemoteSchema(
   { status: 'ok'; schema: string } | { status: 'err'; message: string }
 > {
   try {
+    const agent = new Agent({
+      rejectUnauthorized: !options.ignoreCertErrors
+    });    
     const { data, errors } = await fetch(endpoint, {
+      agent,
       method: options.method,
       headers: options.headers,
       body: JSON.stringify({ query: introspectionQuery }),

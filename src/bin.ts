@@ -11,10 +11,11 @@ Usage:
 Fetch and print the GraphQL schema from a GraphQL HTTP endpoint (Outputs schema in IDL syntax by default).
 
 Options:
-  --header, -h    Add a custom header (ex. 'X-API-KEY=ABC123'), can be used multiple times
-  --json, -j      Output in JSON format (based on introspection query)
-  --method        Use method (GET,POST, PUT, DELETE)
-  --output       Save schema to file.
+  --header, -h            Add a custom header (ex. 'X-API-KEY=ABC123'), can be used multiple times
+  --json, -j              Output in JSON format (based on introspection query)
+  --method                Use method (GET,POST, PUT, DELETE)
+  --output                Save schema to file.
+  --ignoreCertErrors, -i  Ignore SSL certificate errors (self-signed, expired, etc)
 `,
   {
     flags: {
@@ -34,6 +35,11 @@ Options:
       output: {
         type: 'string',
       },
+      ignoreCertErrors: {
+        type: 'boolean',
+        alias: 'i',
+        default: false,
+      },      
     },
   },
 )
